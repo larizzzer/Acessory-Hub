@@ -72,6 +72,14 @@ DROP TABLE Produtos;
 ALTER TABLE Lojas ADD Nome_Loja VARCHAR(100) NOT NULL AFTER Id;
 ALTER TABLE Funcionarios ADD CONSTRAINT Id_Loja FOREIGN KEY (Id_Loja) REFERENCES Lojas(Id);
 ALTER TABLE Produtos ADD CONSTRAINT Id_Lojas FOREIGN KEY (Id_Lojas) REFERENCES Lojas(Id);
+ALTER TABLE Funcionarios MODIFY Email VARCHAR(100) NOT NULL;
+ALTER TABLE Funcionarios ADD CONSTRAINT Funcionarios_Email UNIQUE (Email);
+
+ALTER TABLE Funcionarios DROP INDEX Email;
+ALTER TABLE Funcionarios DROP INDEX Email_2; -- Nesses alter tables alteraram o index para redefinir o UNIQUE que não estava funcionando no ALTER TABLE acima
+ALTER TABLE Funcionarios DROP INDEX Email_3;
+
+SHOW INDEX FROM Funcionarios;
 
 SELECT * FROM Lojas;
 SELECT * FROM Funcionarios;
