@@ -14,3 +14,34 @@ CREATE TABLE Lojas(
     Data_Abertura DATE NOT NULL,
     Status VARCHAR(10) NOT NULL
 );
+
+CREATE TABLE Funcionarios(
+	Id INT AUTO_INCREMENT PRIMARY KEY,
+    Id_Loja INT NOT NULL,
+    Nome VARCHAR(20) NOT NULL,
+    Sobrenome VARCHAR(30) NOT NULL,
+    Cargo VARCHAR(50) NOT NULL UNIQUE,
+    Email VARCHAR(50) NOT NULL UNIQUE,
+    Data_Inicio DATE NOT NULL,
+    Percentual_Comissao DECIMAL(5,2),
+    Status VARCHAR(10) NOT NULL,
+    Data_Demissao DATE DEFAULT NULL
+);
+
+CREATE TABLE Produtos(
+	Id INT AUTO_INCREMENT PRIMARY KEY,
+    Id_Lojas INT,
+    Nome_Produto VARCHAR(100) NOT NULL UNIQUE,
+    Tipo_Acessorio VARCHAR(50) NOT NULL,
+    Preco DECIMAL(5,2) NOT NULL,
+    Descricao TEXT,
+    Qtde_Estoque INT NOT NULL,
+    Data_Cadastro DATE NOT NULL,
+    Marca VARCHAR(25) NOT NULL,
+    Categoria VARCHAR(50) NOT NULL,
+    Ativo VARCHAR(20) NOT NULL,
+    FOREIGN KEY (Id_Lojas) REFERENCES Lojas(Id)
+);
+
+ALTER TABLE Funcionarios ADD CONSTRAINT Id_Loja FOREIGN KEY (Id_Loja) REFERENCES Lojas(Id);
+DROP TABLE Produtos;
