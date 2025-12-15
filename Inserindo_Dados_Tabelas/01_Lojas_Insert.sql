@@ -1,0 +1,16 @@
+INSERT INTO Lojas (Nome_Loja, Nome_Dono, Endereco, Telefone, Email, Estado, Cidade, Cnpj, Data_Abertura, Status)
+VALUES ('Shine Acessórios', 'Marina Lopes', 'Rua das Acácias, 120', '11984561234', 'marina@shineacess.com', 'SP', 'São Paulo', '12.345.678/0001-01', '2019-03-12', 'Ativa'),
+	   ('Urban Style Bijus', 'Carlos Menezes', 'Av. Central, 455', '21993456781', 'contato@urbanstyle.com', 'RJ', 'Rio de Janeiro', '98.765.432/0001-55', '2018-07-25', 'ATIVA'),
+	   ('Bella Acessórios', 'Juliana Rocha', 'Rua Bela Vista, 88', '31988776655', 'juliana@bellaacessorios.com', 'MG', 'Belo Horizonte', '45.112.334/0001-89', '2020-11-02', 'ativa'),
+	   ('Luxe Hub', 'Rafael Nunes', 'Av. Brasil, 902', '11999887766', 'rafael@luxehub.com', 'SP', 'Campinas', '77.889.900/0001-23', '2017-01-15', 'Inativa'),
+	   ('Essence Biju', 'Patricia Azevedo', 'Rua Floriano, 300', '48991234567', 'pat@essencebiju.com', 'SC', 'Florianópolis', '66.554.443/0001-10', '2021-05-19', 'Ativa'),
+	   ('Glow Store', 'Fernanda Lima', 'Av. dos Andradas, 1100', '31992345678', 'fernanda@glowstore.com', 'MG', 'Belo Horizonte', '11.223.344/0001-90', '2022-02-10', 'ATIVA'),
+	   ('Trend Mix', 'Diego Martins', 'Rua Sete de Setembro, 77', '41987654321', 'diego@trendmix.com', 'PR', 'Curitiba', '33.444.555/0001-66', '2016-09-08', 'Inativa'),
+	   ('Paulista Bijus', 'Camila Farias', 'Av. Paulista, 1500', '11991112222', 'camila@paulistabijus.com', 'SP', 'São Paulo', '22.111.999/0001-77', '2015-12-01', 'Ativa'),
+	   ('Nordica Acessórios', 'Bruno Teixeira', 'Rua das Palmeiras, 60', '85981234567', 'bruno@nordicacess.com', 'CE', 'Fortaleza', '55.666.777/0001-88', '2019-08-30', 'ativa'),
+	   ('Mar Acess', 'Renata Pires', 'Av. Beira Mar, 210', '71993445566', 'renata@maracess.com', 'BA', 'Salvador', '88.999.000/0001-11', '2020-06-14', 'ATIVA'),
+	   ('Urban Biju', 'Lucas Andrade', 'Rua XV de Novembro, 345', '41999887755', 'lucas@urbanbiju.com', 'PR', 'Curitiba', '91.223.445/0001-32', '2018-04-03', 'Ativa'),
+	   ('Flora Acessórios', 'Vanessa Torres', 'Rua das Flores, 910', '11987651234', 'vanessa@floracess.com', 'SP', 'Santos', '10.998.776/0001-44', '2021-09-21', 'ativa'),
+	   ('Capital Shine', 'Eduardo Freitas', 'Av. Getúlio Vargas, 800', '61993446677', 'eduardo@capitalshine.com', 'DF', 'Brasília', '64.332.110/0001-09', '2017-10-17', 'Inativa'),
+	   ('Trend Acessórios', 'Aline Moreira', 'Rua Independência, 54', '51992334455', 'aline@trendacessorios.com', 'RS', 'Porto Alegre', '29.887.665/0001-54', '2019-01-09', 'ATIVA'),
+	   ('Silver Hub', 'Thiago Ribeiro', 'Av. Dom Pedro II, 222', '11995544332', 'thiago@silverhub.com', 'SP', 'Guarulhos', '74.221.889/0001-67', '2016-06-28', 'Ativa');
