@@ -80,6 +80,7 @@ ALTER TABLE Funcionarios DROP INDEX Email_2; -- Nesses alter tables alteraram o 
 ALTER TABLE Funcionarios DROP INDEX Email_3;
 
 SHOW INDEX FROM Funcionarios;
+SHOW TABLE status LIKE 'Funcionarios'; -- Verificar o Auto_Increment, onde ele está apontando, neste momento está no 41
 
 SELECT * FROM Lojas;
 SELECT * FROM Funcionarios;
