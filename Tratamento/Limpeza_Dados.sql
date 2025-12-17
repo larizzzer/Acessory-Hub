@@ -29,3 +29,17 @@ SELECT Id,
        Cnpj,
        CONCAT(UCASE(SUBSTRING(Status, 1, 1)), LOWER(SUBSTRING(Status, 2))) AS Status
 FROM Lojas;
+
+-- TABELA PEDIDOS
+SELECT * FROM Pedidos;
+SELECT * FROM VW_Padronizacao_Pedidos;
+
+CREATE VIEW VW_Padronizacao_Pedidos AS
+SELECT
+	  Id,
+      Id_Funcionarios AS "Funcionário",
+      Data_Pedido AS "Data do Pedido",
+      Forma_Pagamento AS "Forma de Pagamento",
+      IFNULL(Desconto, 0.00) AS Desconto, -- Caso houver valores nulos, colocará como 0.00
+	  CONCAT(UCASE(SUBSTRING(Status_Pedido, 1, 1)), LOWER(SUBSTRING(Status_Pedido, 2))) AS Status
+FROM Pedidos;
