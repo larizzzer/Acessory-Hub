@@ -43,3 +43,14 @@ SELECT
       IFNULL(Desconto, 0.00) AS Desconto, -- Caso houver valores nulos, colocará como 0.00
 	  CONCAT(UCASE(SUBSTRING(Status_Pedido, 1, 1)), LOWER(SUBSTRING(Status_Pedido, 2))) AS Status
 FROM Pedidos;
+
+-- TABELA ITENS DO PEDIDO
+SELECT * FROM Itens_do_Pedido;
+SELECT * FROM VW_Padronizacao_Itens_Pedido;
+
+CREATE VIEW VW_Padronizacao_Itens_Pedido AS
+SELECT Id_Produto AS Produto,
+	   Id_Pedido AS Pedido,
+       IFNULL(Desconto_Item, 0.00) AS Desconto,
+       Subtotal
+FROM Itens_do_Pedido;
