@@ -27,8 +27,8 @@ FROM (
 	SELECT l.Loja AS Loja,
            f.Nome AS Funcionario,
            SUM(p.Valor_Total) AS Vendas
-    FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
-    JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+    FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja  -- Soma o valor vendido por funcionário de cada loja
+    JOIN Pedidos p ON f.Id = p.Id_Funcionarios 
     WHERE p.Status_Pedido = 'Realizado'
     GROUP BY l.Loja, f.Nome
 ) vendas
@@ -39,11 +39,13 @@ JOIN (
         SELECT l.Loja AS Loja,
                f.Nome AS Funcionario,
                SUM(p.Valor_Total) AS Vendas
-        FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
+        FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja -- Identifica em cada loja qual foi o maior valor de vendas
         JOIN Pedidos p ON f.Id = p.Id_Funcionarios
         WHERE p.Status_Pedido = 'Realizado'
         GROUP BY l.Loja, f.Nome
     ) totais
     GROUP BY Loja
-) maximos ON vendas.Loja = maximos.Loja AND vendas.Vendas = maximos.Maior_Venda;
+) maximos ON vendas.Loja = maximos.Loja AND vendas.Vendas = maximos.Maior_Venda; -- Retorna somente quem atingiu esse maior valor
+
+-- 
 
