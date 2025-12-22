@@ -46,6 +46,3 @@ JOIN (
     ) totais
     GROUP BY Loja
 ) maximos ON vendas.Loja = maximos.Loja AND vendas.Vendas = maximos.Maior_Venda; -- Retorna somente quem atingiu esse maior valor
-
--- 
-
