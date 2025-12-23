@@ -6,14 +6,14 @@ SELECT * FROM Pedidos;
 SELECT * FROM VW_Padronizacao_Pedidos;
 SELECT * FROM VW_Funcionarios_Padronizados;
 SELECT * FROM Funcionarios;
+SELECT * FROM Itens_do_Pedido;
 
 -- VENDAS E DESEMPENHO
--- Qual foi o faturamento total por loja em um determinado período?
+-- Qual foi o valor total de vendas por funcionário em cada loja
 SELECT 
       l.Loja AS Loja,
       f.Nome AS Nome,
-      CONCAT(UCASE(SUBSTRING(p.Status_Pedido, 1, 1)), LOWER(SUBSTRING(p.Status_Pedido, 2))) AS Status,
-      ROUND(AVG(p.Valor_Total), 2) AS "Média de Venda"
+      ROUND(SUM(p.Valor_Total), 2) AS "Venda Totais"
 FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
 JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = "Realizado"
@@ -46,3 +46,13 @@ JOIN (
     ) totais
     GROUP BY Loja
 ) maximos ON vendas.Loja = maximos.Loja AND vendas.Vendas = maximos.Maior_Venda; -- Retorna somente quem atingiu esse maior valor
+
+-- Qual o valor médio de vendas por funcionário de cada loja
+SELECT 
+      l.Loja AS Loja,
+      f.Nome AS Nome,
+      ROUND(AVG(p.Valor_Total), 2) AS "Média de Vendas"
+FROM VW_Lojas_Padronizadas l INNER JOIN Funcionarios f ON l.Id = f.Id_Loja
+INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+WHERE p.Status_Pedido = "Realizado"
+GROUP BY l.Loja, f.Nome, p.Status_Pedido;
