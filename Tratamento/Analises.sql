@@ -139,17 +139,22 @@ SELECT
     COUNT(ip.Id_Pedido) AS 'Total das vendas com desconto', -- Identifica os produtos com mais desconto
     ROUND(SUM(IFNULL(ip.Desconto_Item, 0)), 2) AS Total_Desconto_Concedido, -- Trata valores nulos
     ROUND(AVG(IFNULL(ip.Desconto_Item, 0)), 2) AS 'Media de desconto por venda'
-FROM Itens_do_Pedido ip JOIN Produtos pr ON ip.Id_Produto = pr.Id
-JOIN Pedidos p ON ip.Id_Pedido = p.Id 
+FROM Itens_do_Pedido ip INNER JOIN Produtos pr ON ip.Id_Produto = pr.Id
+INNER JOIN Pedidos p ON ip.Id_Pedido = p.Id 
 WHERE IFNULL(ip.Desconto_Item, 0) > 0 AND p.Status_Pedido = 'Realizado' -- Considera apenas as vendas realizadas
 GROUP BY pr.Nome_Produto
 ORDER BY Total_Desconto_Concedido DESC;
 
 -- Existe algum funcionário que concedeu mais desconto que os outros?
 SELECT 
-      f.Nome AS 'Nome',
-      SUM(i.Desconto_Item) AS Total_Descontos
-FROM Funcionarios f INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
-INNER JOIN Itens_do_Pedido i ON p.Id = i.Id_Pedido
-GROUP BY f.Nome
-ORDER BY Total_Descontos DESC;
+      f.Nome AS Funcionario,
+      l.Nome_Loja AS Loja,
+      ROUND(SUM(IFNULL(p.Desconto, 0)), 2) AS Total_Desconto_Concedido,
+      COUNT(p.Id) AS Total_Pedidos,
+      ROUND(SUM(IFNULL(p.Desconto, 0)) / COUNT(p.Id), 2) AS Media_Desconto_Por_Pedido
+FROM Funcionarios f INNER JOIN Lojas l ON f.Id_Loja = l.Id
+INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+WHERE p.Status_Pedido = 'Realizado'
+GROUP BY f.Nome, l.Nome_Loja
+ORDER BY Total_Desconto_Concedido DESC;
+
