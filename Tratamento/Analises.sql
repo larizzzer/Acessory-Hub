@@ -54,7 +54,6 @@ FROM Itens_do_Pedido i
 JOIN Pedidos p ON i.Id_Pedido = p.Id
 WHERE p.Status_Pedido = 'Realizado';
 
-
 -- Quais dias da semana concentram mais vendas?
 SET lc_time_names = 'pt_BR'; -- Faz essa query primeiro para traduzir os dias em inglês para português
 SELECT 
@@ -69,14 +68,6 @@ ORDER BY Total_Vendas DESC;
 -- FUNCIONÁRIOS
 -- Qual é o desempenho médio de vendas por funcionário?
 SELECT 
-      f.Nome,
-      ROUND(AVG(p.Valor_Total),2) AS "Média de Vendas"
-FROM Funcionarios f
-JOIN Pedidos p ON f.Id = p.Id_Funcionarios
-WHERE p.Status_Pedido = 'Realizado'
-GROUP BY f.Nome;
-
-SELECT 
       l.Loja AS Loja,
       f.Nome AS Nome,
       ROUND(AVG(p.Valor_Total), 2) AS "Média de Vendas"
@@ -84,3 +75,24 @@ FROM VW_Lojas_Padronizadas l INNER JOIN Funcionarios f ON l.Id = f.Id_Loja
 INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = "Realizado"
 GROUP BY l.Loja, f.Nome, p.Status_Pedido;
+
+-- Existem funcionários inativos que possuem pedidos associados?
+SELECT 
+      f.Nome AS Nome,
+      f.Status AS Status,
+      COUNT(p.Id) AS 'Quantidade de pedidos'
+FROM VW_Funcionarios_Padronizados f JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+WHERE f.Status = 'Inativo'
+GROUP BY f.Nome, f.Status;
+
+-- Qual percentual das vendas totais de cada funcionário dentro de suas lojas?
+SELECT 
+      l.Loja AS Loja,
+      f.Nome AS Nome,
+      SUM(p.Valor_Total) AS 'Total por funcionário',
+	  ROUND(SUM(p.Valor_Total) /SUM(SUM(p.Valor_Total)) OVER (PARTITION BY l.Loja) * 100, 2 -- Calcula a participação percentual de cada funcionário
+		   ) AS 'Percentual de participação'
+FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
+JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+WHERE p.Status_Pedido = 'Realizado'
+GROUP BY l.Loja, f.Nome;
