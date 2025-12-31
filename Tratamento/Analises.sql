@@ -124,3 +124,32 @@ FROM Itens_do_Pedido i JOIN Produtos pr ON i.Id_Produto = pr.Id
 GROUP BY pr.Nome_Produto HAVING Quantidade_Vendida < 3 -- Indica a quantidade vendida de cada item
 ORDER BY Faturamento DESC
 LIMIT 3;
+
+-- DESCONTOS
+-- Qual o impacto dos descontos no faturamento total?
+SELECT 
+	  SUM(i.Desconto_Item) AS 'Total dos descontos',
+      SUM(i.Subtotal) AS 'Valor bruto',
+      SUM(i.Subtotal - IFNULL(i.Desconto_Item,0)) AS 'Valor líquido'
+FROM Itens_do_Pedido i;
+
+-- Quais produtos receberam mais desconto?
+SELECT 
+    pr.Nome_Produto AS Produto,
+    COUNT(ip.Id_Pedido) AS 'Total das vendas com desconto', -- Identifica os produtos com mais desconto
+    ROUND(SUM(IFNULL(ip.Desconto_Item, 0)), 2) AS Total_Desconto_Concedido, -- Trata valores nulos
+    ROUND(AVG(IFNULL(ip.Desconto_Item, 0)), 2) AS 'Media de desconto por venda'
+FROM Itens_do_Pedido ip JOIN Produtos pr ON ip.Id_Produto = pr.Id
+JOIN Pedidos p ON ip.Id_Pedido = p.Id 
+WHERE IFNULL(ip.Desconto_Item, 0) > 0 AND p.Status_Pedido = 'Realizado' -- Considera apenas as vendas realizadas
+GROUP BY pr.Nome_Produto
+ORDER BY Total_Desconto_Concedido DESC;
+
+-- Existe algum funcionário que concedeu mais desconto que os outros?
+SELECT 
+      f.Nome AS 'Nome',
+      SUM(i.Desconto_Item) AS Total_Descontos
+FROM Funcionarios f INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+INNER JOIN Itens_do_Pedido i ON p.Id = i.Id_Pedido
+GROUP BY f.Nome
+ORDER BY Total_Descontos DESC;
