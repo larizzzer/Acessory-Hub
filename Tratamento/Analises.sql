@@ -56,3 +56,14 @@ FROM VW_Lojas_Padronizadas l INNER JOIN Funcionarios f ON l.Id = f.Id_Loja
 INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = "Realizado"
 GROUP BY l.Loja, f.Nome, p.Status_Pedido;
+
+-- Quais dias da semana concentram mais vendas?
+SET lc_time_names = 'pt_BR';
+SELECT 
+    DAYNAME(p.Data_Pedido) AS Dia_Semana,
+    COUNT(p.Id) AS Quantidade_Pedidos,
+    SUM(p.Valor_Total) AS Total_Vendas
+FROM Pedidos p
+WHERE p.Status_Pedido = 'Realizado'
+GROUP BY DAYNAME(p.Data_Pedido)
+ORDER BY Total_Vendas DESC;
