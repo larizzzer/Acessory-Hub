@@ -9,14 +9,14 @@ SELECT * FROM Funcionarios;
 SELECT * FROM Itens_do_Pedido;
 
 -- VENDAS E DESEMPENHO
--- Qual foi o valor total de vendas por funcionário em cada loja
+-- Qual foi o faturamento total por loja em um determinado período?
 SELECT 
       l.Loja AS Loja,
       f.Nome AS Nome,
-      ROUND(SUM(p.Valor_Total), 2) AS "Venda Totais"
+      ROUND(SUM(p.Valor_Total), 2) AS "Faturamento Total"
 FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
 JOIN Pedidos p ON f.Id = p.Id_Funcionarios
-WHERE p.Status_Pedido = "Realizado"
+WHERE p.Status_Pedido = "Realizado" AND p.Data_Pedido BETWEEN '2023-01-01' AND '2023-06-30'
 GROUP BY l.Loja, f.Nome, p.Status_Pedido;
 
 -- Qual funcionário vendeu mais em valor total em cada loja
@@ -47,7 +47,35 @@ JOIN (
     GROUP BY Loja
 ) maximos ON vendas.Loja = maximos.Loja AND vendas.Vendas = maximos.Maior_Venda; -- Retorna somente quem atingiu esse maior valor
 
--- Qual o valor médio de vendas por funcionário de cada loja
+-- Qual o valor médio por pedido
+SELECT 
+    ROUND(AVG((i.Subtotal - IFNULL(i.Desconto_Item,0))), 2) AS 'Valor Médio'
+FROM Itens_do_Pedido i
+JOIN Pedidos p ON i.Id_Pedido = p.Id
+WHERE p.Status_Pedido = 'Realizado';
+
+
+-- Quais dias da semana concentram mais vendas?
+SET lc_time_names = 'pt_BR'; -- Faz essa query primeiro para traduzir os dias em inglês para português
+SELECT 
+	  DAYNAME(p.Data_Pedido) AS 'Dia da semana',
+      COUNT(p.Id) AS 'Quantidade de pedidos',
+      SUM(p.Valor_Total) AS Total_Vendas
+FROM Pedidos p
+WHERE p.Status_Pedido = 'Realizado'
+GROUP BY DAYNAME(p.Data_Pedido)
+ORDER BY Total_Vendas DESC;
+
+-- FUNCIONÁRIOS
+-- Qual é o desempenho médio de vendas por funcionário?
+SELECT 
+      f.Nome,
+      ROUND(AVG(p.Valor_Total),2) AS "Média de Vendas"
+FROM Funcionarios f
+JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+WHERE p.Status_Pedido = 'Realizado'
+GROUP BY f.Nome;
+
 SELECT 
       l.Loja AS Loja,
       f.Nome AS Nome,
@@ -56,14 +84,3 @@ FROM VW_Lojas_Padronizadas l INNER JOIN Funcionarios f ON l.Id = f.Id_Loja
 INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = "Realizado"
 GROUP BY l.Loja, f.Nome, p.Status_Pedido;
-
--- Quais dias da semana concentram mais vendas?
-SET lc_time_names = 'pt_BR';
-SELECT 
-    DAYNAME(p.Data_Pedido) AS Dia_Semana,
-    COUNT(p.Id) AS Quantidade_Pedidos,
-    SUM(p.Valor_Total) AS Total_Vendas
-FROM Pedidos p
-WHERE p.Status_Pedido = 'Realizado'
-GROUP BY DAYNAME(p.Data_Pedido)
-ORDER BY Total_Vendas DESC;
