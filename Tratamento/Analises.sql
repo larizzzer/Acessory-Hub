@@ -90,8 +90,7 @@ SELECT
       l.Loja AS Loja,
       f.Nome AS Nome,
       SUM(p.Valor_Total) AS 'Total por funcionário',
-	  ROUND(SUM(p.Valor_Total) /SUM(SUM(p.Valor_Total)) OVER (PARTITION BY l.Loja) * 100, 2 -- Calcula a participação percentual de cada funcionário
-		   ) AS 'Percentual de participação'
+	  ROUND(SUM(p.Valor_Total) /SUM(SUM(p.Valor_Total)) OVER (PARTITION BY l.Loja) * 100, 2) AS 'Percentual de participação' -- Calcula a participação percentual de cada funcionário
 FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
 JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = 'Realizado'
@@ -157,4 +156,33 @@ INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = 'Realizado'
 GROUP BY f.Nome, l.Nome_Loja
 ORDER BY Total_Desconto_Concedido DESC;
+
+-- VISÃO GERENCIAL
+-- Quais lojas tem o melhor desempenho em vendas?
+SELECT 
+      l.Loja AS Loja,
+      SUM(p.Valor_Total) AS Total_Vendas
+FROM VW_Lojas_Padronizadas l INNER JOIN Funcionarios f ON l.Id = f.Id_Loja
+INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+WHERE p.Status_Pedido = 'Realizado'
+GROUP BY l.Loja
+ORDER BY Total_Vendas DESC;
+
+-- Existe alguma diferença significativa entre as lojas na média de vendas?
+SELECT 
+      l.Loja AS Loja,
+      ROUND(AVG(p.Valor_Total),2) AS 'Média de vendas'
+FROM VW_Lojas_Padronizadas l INNER JOIN Funcionarios f ON l.Id = f.Id_Loja
+INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+WHERE p.Status_Pedido = 'Realizado'
+GROUP BY l.Loja;
+
+-- Qual a taxa de pedidos com desconto por loja?
+SELECT 
+      l.Loja AS Loja,
+      COUNT(CASE WHEN p.Desconto > 0 THEN 1 END) / COUNT(p.Id) * 100 AS 'Taxa de desconto'
+FROM VW_Lojas_Padronizadas l INNER JOIN Funcionarios f ON l.Id = f.Id_Loja
+INNER JOIN Pedidos p ON f.Id = p.Id_Funcionarios
+GROUP BY l.Loja;
+
 
