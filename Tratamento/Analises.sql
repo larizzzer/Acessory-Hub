@@ -96,3 +96,31 @@ FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
 JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = 'Realizado'
 GROUP BY l.Loja, f.Nome;
+
+-- PRODUTOS
+-- Quais produtos são os mais vendidos em quantidade?
+SELECT 
+      pr.Nome_Produto,
+      SUM(i.Quantidade) AS Total_Vendido
+FROM Itens_do_Pedido i JOIN Produtos pr ON i.Id_Produto = pr.Id
+GROUP BY pr.Nome_Produto
+ORDER BY Total_Vendido DESC;
+
+-- Quais os 5 produtos que geram mais faturamento?
+SELECT 
+      pr.Nome_Produto AS 'Nome do produto',
+      SUM(i.Subtotal - IFNULL(i.Desconto_Item,0)) AS Faturamento
+FROM Itens_do_Pedido i INNER JOIN Produtos pr ON i.Id_Produto = pr.Id
+GROUP BY pr.Nome_Produto
+ORDER BY Faturamento DESC
+LIMIT 5;
+
+-- Existem 3 produtos que vendem pouco, mas com alto valor agregado?
+SELECT 
+      pr.Nome_Produto AS 'Nome do produto',
+      SUM(i.Quantidade) AS Quantidade_Vendida,
+      SUM(i.Subtotal) AS Faturamento
+FROM Itens_do_Pedido i JOIN Produtos pr ON i.Id_Produto = pr.Id
+GROUP BY pr.Nome_Produto HAVING Quantidade_Vendida < 3 -- Indica a quantidade vendida de cada item
+ORDER BY Faturamento DESC
+LIMIT 3;
