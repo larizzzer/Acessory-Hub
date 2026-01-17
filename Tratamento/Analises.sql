@@ -90,7 +90,7 @@ SELECT
       l.Loja AS Loja,
       f.Nome AS Nome,
       SUM(p.Valor_Total) AS 'Total por funcionário',
-	  ROUND(SUM(p.Valor_Total) /SUM(SUM(p.Valor_Total)) OVER (PARTITION BY l.Loja) * 100, 2) AS 'Percentual de participação' -- Calcula a participação percentual de cada funcionário
+	  ROUND(SUM(p.Valor_Total) / SUM(SUM(p.Valor_Total)) OVER (PARTITION BY l.Loja) * 100, 2) AS 'Percentual de participação' -- Calcula a participação percentual de cada funcionário
 FROM VW_Lojas_Padronizadas l JOIN Funcionarios f ON l.Id = f.Id_Loja
 JOIN Pedidos p ON f.Id = p.Id_Funcionarios
 WHERE p.Status_Pedido = 'Realizado'
