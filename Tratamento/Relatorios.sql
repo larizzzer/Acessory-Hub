@@ -120,8 +120,8 @@ ORDER BY Faturamento_Total DESC;
 
 -- Impacto dos descontos
 SELECT 
-      ROUND(SUM(IFNULL(p.Desconto, 0)), 2) AS Total_Descontos,
-      ROUND(AVG(IFNULL(p.Desconto, 0)), 2) AS Media_Desconto_Por_Pedido
+      ROUND(SUM(IFNULL(p.Desconto, 0)), 2) AS 'Total de Descontos',
+      ROUND(AVG(IFNULL(p.Desconto, 0)), 2) AS 'Média de Desconto Por Pedido'
 FROM Pedidos p
 WHERE p.Status_Pedido = 'Realizado';
 
