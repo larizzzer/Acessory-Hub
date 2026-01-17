@@ -61,12 +61,19 @@ Acessory-Hub/
 │   └── 05_itens_pedido_inserts.sql
 │   
 ├── Tratamento/
-│       ├── analises.sql
-│       ├── limpeza_dados.sql
-│       └── relatorios.sql
+│   ├── analises.sql
+│   ├── limpeza_dados.sql
+│   └── relatorios.sql
 │
-└── Power_BI/    
-    └── Dashboard.pbix
+├── Power_BI/
+│   ├── Imagens_Dashboard
+│   │   ├── 1_Visão_Geral_Financeira.png
+│   │   ├── 2_Desempenho_por_Funcionário.png
+│   │   ├── 3_Análise_de_Produto.png
+│   │   ├── 4_Análise_de_Descontos.png
+│   │   └── 5_Comparativo_de_Lojas.png
+│   └── Dashboard.pbix
+└──
 ```
 
 ## 👩‍💻 Autores
