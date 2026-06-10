@@ -76,7 +76,7 @@ Acessory-Hub/
 └──
 ```
 
-## 👩‍💻 Autores
+## 👩‍💻 Autora
 
 - [@larizzzer](https://www.github.com/larizzzer)
 
